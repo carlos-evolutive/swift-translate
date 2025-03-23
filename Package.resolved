@@ -1,13 +1,12 @@
 {
-  "originHash" : "071676d25da1757ee1707bea68390c034d7e4abce3826204326b59486b00c766",
   "pins" : [
     {
       "identity" : "openai",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MacPaw/OpenAI.git",
       "state" : {
-        "revision" : "843e087929aa806adb611dbca93f9a4a7f28be04",
-        "version" : "0.3.0"
+        "branch" : "293-keynotfound-errors-since-v037",
+        "revision" : "a60c1e685a1949194c8102fd4e5ee182008ee4d8"
       }
     },
     {
@@ -29,5 +28,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

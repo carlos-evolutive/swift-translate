@@ -36,23 +36,41 @@ struct OpenAITranslator {
             Avoid using the same word more than once in a row.
             Avoid using the same character more than 3 times in a row.
             Trim extra spaces and the beginning and end of the translated text.
+            Put extra attention to Punctuation Marks, Exclamation Marks, Quotation Marks, etc... And try to maintain them as in the original text. So if there is no punctuation mark at the end of a text don't put it in the response. !! Important !!
             Do not provide blank translations. Do not hallucinate. Do not provide translations that are not faithful to the original text.
             Put particular attention to languages that use different characters and symbols than English.
             """
         if let comment {
-            systemPrompt += "\nTake into consideration the following context when translating, but do not completely change the translation because of it: \(comment)\n"
+            systemPrompt += "\nTake into consideration the following context when translating, but do not completely change the translation because of it, it is a comment for the translator: \(comment)\n"
         }
         
-        return ChatQuery(
-            messages: [
-                .system(.init(content: systemPrompt)),
-                .user(.init(content: .string(translatableText))),
-            ],
-            model: model.rawValue,
-            frequencyPenalty: -2,
-            presencePenalty: -2,
-            responseFormat: .text
-        )
+        let query: ChatQuery!
+        
+        switch model {
+        case .gpt3_5Turbo: fallthrough
+        case .gpt4o: fallthrough
+        case .gpt4_5: query = ChatQuery(messages: [
+                                            .system(.init(content: systemPrompt)),
+                                            .user(.init(content: .string(translatableText))),
+                                        ],
+                                        model: model.rawValue,
+                                        frequencyPenalty: -2,
+                                        presencePenalty: -2,
+                                        responseFormat: .text
+                                    )
+        case .o3_mini: fallthrough
+        case .o1: fallthrough
+        case .o1_mini: query = ChatQuery( messages: [
+                                                .system(.init(content: systemPrompt)),
+                                                .user(.init(content: .string(translatableText))),
+                                            ],
+                                            model: model.rawValue,
+                                            reasoningEffort: .medium,
+                                            responseFormat: .text
+                                        )
+        }
+        
+        return query
     }
 }
 
@@ -68,13 +86,23 @@ extension OpenAITranslator: TranslationService {
         var attempt = 0
         repeat {
             attempt += 1
-            let result = try? await openAI.chats(
-                query: chatQuery(for: string, targetLanguage: targetLanguage, comment: comment)
-            )
-            guard let result = result, let translatedText = result.choices.first?.message.content?.string, !translatedText.isEmpty else {
+            do {
+                let result = try await openAI.chats(query: chatQuery(for: string, targetLanguage: targetLanguage, comment: comment))
+                
+                guard let choice = result.choices.first else {
+                    print("Warning: No translated text returned from OpenAI. No choices available.")
+                    continue
+                }
+
+                guard let translatedText = choice.message.content, !translatedText.isEmpty else {
+                    print("Warning: No translated text returned from OpenAI. Finish Reason: \(choice.finishReason)")
+                    continue
+                }
+                return translatedText
+            } catch {
+                print("Error performing OpenAI translation request: \(error). Retrying...")
                 continue
             }
-            return translatedText
         } while attempt < retries
 
         throw SwiftTranslateError.noTranslationReturned

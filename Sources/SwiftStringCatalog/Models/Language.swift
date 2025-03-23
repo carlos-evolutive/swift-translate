@@ -44,8 +44,12 @@ public extension Language {
             .danish,
             .dutch,
             .english,
+            .englishAustralia,
+            .englishIndia,
+            .englishUnitedKingdom,
             .finnish,
             .french,
+            .frenchCanada,
             .german,
             .greek,
             .hebrew,
@@ -63,10 +67,15 @@ public extension Language {
             .romanian,
             .russian,
             .slovak,
+            .slovenian,
             .spanish,
+            .spanishLatam,
+            .spanishUS,
             .swedish,
             .thai,
-            .turkish
+            .turkish,
+            .ukrainian,
+            .vietnamese,
         ]
     }
     
@@ -80,8 +89,12 @@ public extension Language {
     static let danish = Self("da")
     static let dutch = Self("nl")
     static let english = Self("en")
+    static let englishAustralia = Self("en-AU")
+    static let englishIndia = Self("en-IN")
+    static let englishUnitedKingdom = Self("en-GB")
     static let finnish = Self("fi")
     static let french = Self("fr")
+    static let frenchCanada = Self("fr-CA")
     static let german = Self("de")
     static let greek = Self("el")
     static let hebrew = Self("he")
@@ -99,7 +112,10 @@ public extension Language {
     static let romanian = Self("ro")
     static let russian = Self("ru")
     static let slovak = Self("sk")
+    static let slovenian = Self("sl")
     static let spanish = Self("es")
+    static let spanishLatam = Self("es-419")
+    static let spanishUS = Self("es-US")
     static let swedish = Self("sv")
     static let thai = Self("th")
     static let turkish = Self("tr")

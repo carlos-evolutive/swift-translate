@@ -14,15 +14,17 @@ struct StringCatalogTranslator: FileTranslator {
     let skipConfirmations: Bool
     let targetLanguages: Set<Language>?
     let service: TranslationService
+    let retranslate: Bool
     let verbose: Bool
     
     // MARK: Lifecycle
     
-    init(with translator: TranslationService, targetLanguages: Set<Language>?, overwrite: Bool, skipConfirmations: Bool, verbose: Bool) {
+    init(with translator: TranslationService, targetLanguages: Set<Language>?, overwrite: Bool, skipConfirmations: Bool, retranslate: Bool, verbose: Bool) {
         self.skipConfirmations = skipConfirmations
         self.overwrite = overwrite
         self.targetLanguages = targetLanguages
         self.service = translator
+        self.retranslate = retranslate
         self.verbose = verbose
     }
     
@@ -67,7 +69,7 @@ struct StringCatalogTranslator: FileTranslator {
                 let isSource = catalog.sourceLanguage == localizableString.targetLanguage
                 let targetLanguage = localizableString.targetLanguage
 
-                if localizableString.state == .translated || isSource {
+                if (localizableString.state == .translated && !self.retranslate) || isSource {
                     if verbose {
                         let result = isSource
                         ? localizableString.sourceKey.truncatedRemovingNewlines(to: 64)

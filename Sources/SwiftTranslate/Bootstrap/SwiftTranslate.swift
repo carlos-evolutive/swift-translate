@@ -27,9 +27,9 @@ struct SwiftTranslate: AsyncParsableCommand {
     
     @Option(
         name: [.customLong("model"), .customShort("m")],
-        help: "OpenAI model to use. Either `gpt-3.5-turbo` (default) or `gpt-4o`. Ignored when using Google Translate"
+        help: "OpenAI model to use. Either `gpt-3.5-turbo` (default) or `gpt-4o`, `o1`, `o1-mini`, `o3-mini`. Ignored when using Google Translate"
     )
-    private var model: OpenAIModel = .gpt3_5Turbo
+    private var model: OpenAIModel = .o3_mini
     
     @OptionGroup(
         title: "Translate text"
@@ -125,6 +125,7 @@ struct SwiftTranslate: AsyncParsableCommand {
             mode: mode,
             translator: translator,
             skipConfirmation: skipConfirmation,
+            retranslate: catalogOptions.retranslate,
             verbose: verbose
         )
         try await coordinator.translate()
@@ -148,6 +149,12 @@ fileprivate struct CatalogTranlationOptions: ParsableArguments {
         help: "Overwrite string catalog files instead of creating a new file"
     )
     var overwriteExisting: Bool = false
+    
+    @Flag(
+        name: [.customLong("retranslate")],
+        help: "Retranslate all string catalog text instead of not translating the already currently translated"
+    )
+    var retranslate: Bool = false
     
     @Argument(
         parsing: .remaining,

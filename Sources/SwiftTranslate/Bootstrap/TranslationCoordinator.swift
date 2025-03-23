@@ -21,13 +21,15 @@ struct TranslationCoordinator {
     let translator: TranslationService
     let skipConfirmation: Bool
     let verbose: Bool
+    let retranslate: Bool
 
     // MARK: Lifecycle
     
-    init(mode: Mode, translator: TranslationService, skipConfirmation: Bool, verbose: Bool) {
+    init(mode: Mode, translator: TranslationService, skipConfirmation: Bool, retranslate: Bool, verbose: Bool) {
         self.mode = mode
         self.translator = translator
         self.skipConfirmation = skipConfirmation
+        self.retranslate = retranslate
         self.verbose = verbose
     }
     
@@ -76,6 +78,7 @@ struct TranslationCoordinator {
             targetLanguages: targetLanguages,
             overwrite: overwrite,
             skipConfirmations: skipConfirmation,
+            retranslate: retranslate,
             verbose: verbose
         )
         
