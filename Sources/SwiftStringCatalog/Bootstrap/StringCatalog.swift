@@ -35,7 +35,8 @@ public final class StringCatalog {
     public init(url: URL, configureWith targetLanguages: Set<Language>? = nil) throws {
         let data = try Data(contentsOf: url)
         let decoder = JSONDecoder()
-        var catalog: _StringCatalog!
+        
+        let catalog = try decoder.decode(_StringCatalog.self, from: data)
         if catalog.version != version {
             throw Error.catalogVersionNotSupported(catalog.version)
         }
@@ -78,7 +79,6 @@ public final class StringCatalog {
         for (key, entry) in catalog.strings {
             let sourceLanguageStrings = try sourceLanguageStrings(in: entry, for: key)
             self.sourceLanguageStrings[key] = sourceLanguageStrings
-            print("localizableStrings for \(key). entry: \(entry), sourceLanguageStrings: \(sourceLanguageStrings)")
             let localizableStrings = try localizableStrings(in: entry, for: key, referencing: sourceLanguageStrings)
             localizableStringsCount += localizableStrings.count
             localizableStringGroups[key] = LocalizableStringGroup(

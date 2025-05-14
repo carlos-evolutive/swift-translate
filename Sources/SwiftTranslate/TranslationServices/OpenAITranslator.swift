@@ -49,24 +49,20 @@ struct OpenAITranslator {
         switch model {
         case .gpt3_5Turbo: fallthrough
         case .gpt4o: fallthrough
-        case .gpt4_5: query = ChatQuery(messages: [
-                                            .system(.init(content: systemPrompt)),
-                                            .user(.init(content: .string(translatableText))),
-                                        ],
+        case .gpt4_1: query = ChatQuery(messages: [ .system(.init(content: systemPrompt)),
+                                                    .user(.init(content: .string(translatableText))) ],
                                         model: model.rawValue,
                                         frequencyPenalty: -2,
                                         presencePenalty: -2,
                                         responseFormat: .text
                                     )
         case .o3_mini: fallthrough
-        case .o1: fallthrough
-        case .o1_mini: query = ChatQuery( messages: [
-                                                .system(.init(content: systemPrompt)),
-                                                .user(.init(content: .string(translatableText))),
-                                            ],
-                                            model: model.rawValue,
-                                            reasoningEffort: .medium,
-                                            responseFormat: .text
+        case .o3: fallthrough
+        case .o4_mini: query = ChatQuery( messages: [ .system(.init(content: systemPrompt)),
+                                                      .user(.init(content: .string(translatableText))) ],
+                                          model: model.rawValue,
+                                          reasoningEffort: (model == .o3) ? .medium : .high,
+                                          responseFormat: .text
                                         )
         }
         

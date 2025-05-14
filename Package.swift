@@ -25,7 +25,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.0")),
-        .package(url: "https://github.com/MacPaw/OpenAI.git", .branch("293-keynotfound-errors-since-v037")),//.upToNextMajor(from: "0.3.7")),
+        .package(url: "https://github.com/MacPaw/OpenAI.git", .upToNextMajor(from: "0.4.2")),
         .package(url: "https://github.com/onevcat/Rainbow.git", .upToNextMajor(from: "4.0.0")),
     ],
     targets: [
@@ -37,7 +37,7 @@ let package = Package(
             capability: .command(
                 intent: .custom(
                     verb: "swift-translate",
-                    description: "Translates project String Catalogs using OpenAI's GPT 3.5 model"
+                    description: "Translates project String Catalogs using OpenAI's GPT o3 model"
                 ),
                 permissions: [
                     .writeToPackageDirectory(reason: "Translates string catalogs in your project"),

@@ -27,9 +27,9 @@ struct SwiftTranslate: AsyncParsableCommand {
     
     @Option(
         name: [.customLong("model"), .customShort("m")],
-        help: "OpenAI model to use. Either `gpt-3.5-turbo` (default) or `gpt-4o`, `o1`, `o1-mini`, `o3-mini`. Ignored when using Google Translate"
+        help: "OpenAI model to use. Either `gpt-3.5-turbo` (default) or `gpt-4o`, `o1`, `o3-mini`, `o3-mini`. Ignored when using Google Translate"
     )
-    private var model: OpenAIModel = .o3_mini
+    private var model: OpenAIModel = .gpt4_1
     
     @OptionGroup(
         title: "Translate text"
@@ -59,7 +59,7 @@ struct SwiftTranslate: AsyncParsableCommand {
         name: [.customLong("retries"), .short],
         help: "Retries for OpenAI API requests in case of errors. Ignored when using Google Translate"
     )
-    private var requestRetry: Int = 1
+    private var requestRetry: Int = 3
 
     @Option(
         name: [.customLong("timeout")],

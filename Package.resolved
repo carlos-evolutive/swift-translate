@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MacPaw/OpenAI.git",
       "state" : {
-        "branch" : "293-keynotfound-errors-since-v037",
-        "revision" : "a60c1e685a1949194c8102fd4e5ee182008ee4d8"
+        "revision" : "40f3d6cdb5a2ad72369984a8e0e99a28c6e46f47",
+        "version" : "0.4.2"
       }
     },
     {
